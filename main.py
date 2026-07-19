@@ -26,6 +26,7 @@ CONFIG = {
     ),
     "dates": os.getenv("BMS_DATES", ""),          # comma-separated YYYYMMDD, empty = from URL
     "theatre": os.getenv("BMS_THEATRE", ""),       # substring filter, empty = all
+    "screen": os.getenv("BMS_SCREEN", ""),
     "time_period": os.getenv("BMS_TIME", ""),      # e.g. "evening,night", empty = all
 }
 
@@ -266,7 +267,7 @@ def parse_shows(data):
 # ──────────────────────────────────────────────────────────────────────
 # FILTERING
 # ──────────────────────────────────────────────────────────────────────
-def filter_shows(shows, theatre_filter, time_periods, date_codes):
+def filter_shows(shows, theatre_filter, screen_filter, time_periods, date_codes):
     result = []
     kws = [k.strip().lower() for k in theatre_filter.split(",")
            if k.strip()] if theatre_filter else []
@@ -285,6 +286,12 @@ def filter_shows(shows, theatre_filter, time_periods, date_codes):
         # Date filter
         if dates_set and s.date_code and s.date_code not in dates_set:
             continue
+            
+            # Screen filter
+        if screen_filter:
+            screen_lower = s.screen_attr.lower()
+            if screen_filter.lower() not in screen_lower:
+                continue
 
         # Time period filter
         if periods:
@@ -596,6 +603,7 @@ def main():
     filtered = filter_shows(
         all_shows,
         CONFIG["theatre"],
+        CONFIG["screen"],
         CONFIG["time_period"],
         CONFIG["dates"],
     )

@@ -582,7 +582,7 @@ if CONFIG["dates"]:
     ]
 
 all_dates.extend(parsed_dates)
-        all_shows.extend(parse_shows(data))
+all_shows.extend(parse_shows(data))
 
     if not all_shows:
         print("  ❌ No showtimes found.")

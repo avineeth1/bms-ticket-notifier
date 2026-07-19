@@ -568,8 +568,20 @@ def main():
 
         if movie_info["name"] == "Unknown":
             movie_info = parse_movie_info(data)
+parsed_dates = parse_dates(data)
 
-        all_dates.extend(parse_dates(data))
+if CONFIG["dates"]:
+    wanted_dates = {
+        d.strip()
+        for d in CONFIG["dates"].split(",")
+        if d.strip()
+    }
+    parsed_dates = [
+        d for d in parsed_dates
+        if d.date_code in wanted_dates
+    ]
+
+all_dates.extend(parsed_dates)
         all_shows.extend(parse_shows(data))
 
     if not all_shows:
@@ -588,7 +600,13 @@ def main():
     print(f"  📊 {len(filtered)} showtime(s) after filters")
 
     # Build state & detect changes
-    new_state = build_state(filtered, all_dates)
+    filtered_dates = [
+    d for d in all_dates
+    if not CONFIG["dates"]
+    or d.date_code in CONFIG["dates"].split(",")
+]
+
+new_state = build_state(filtered, filtered_dates)
     old_state = load_state()
 
     changes = []

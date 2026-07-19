@@ -566,24 +566,24 @@ def main():
             print(f"  ⚠️  No data for date {dc or '(default)'}")
             continue
 
-        if movie_info["name"] == "Unknown":
+                 if movie_info["name"] == "Unknown":
             movie_info = parse_movie_info(data)
-parsed_dates = parse_dates(data)
 
-if CONFIG["dates"]:
-    wanted_dates = {
-        d.strip()
-        for d in CONFIG["dates"].split(",")
-        if d.strip()
-    }
-    parsed_dates = [
-        d for d in parsed_dates
-        if d.date_code in wanted_dates
-    ]
+        parsed_dates = parse_dates(data)
 
-all_dates.extend(parsed_dates)
-all_shows.extend(parse_shows(data))
+        if CONFIG["dates"]:
+            wanted_dates = {
+                d.strip()
+                for d in CONFIG["dates"].split(",")
+                if d.strip()
+            }
+            parsed_dates = [
+                d for d in parsed_dates
+                if d.date_code in wanted_dates
+            ]
 
+        all_dates.extend(parsed_dates)
+        all_shows.extend(parse_shows(data))
     if not all_shows:
         print("  ❌ No showtimes found.")
         sys.exit(0)

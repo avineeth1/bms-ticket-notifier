@@ -601,14 +601,14 @@ def main():
     )
     print(f"  📊 {len(filtered)} showtime(s) after filters")
 
-    # Build state & detect changes
+   # Build state & detect changes
     filtered_dates = [
-    d for d in all_dates
-    if not CONFIG["dates"]
-    or d.date_code in CONFIG["dates"].split(",")
-]
+        d for d in all_dates
+        if not CONFIG["dates"]
+        or d.date_code in CONFIG["dates"].split(",")
+    ]
 
-new_state = build_state(filtered, filtered_dates)
+    new_state = build_state(filtered, filtered_dates)
     old_state = load_state()
 
     changes = []

@@ -644,7 +644,11 @@ def main():
             for c in s.categories
         )
         fmt = f"|{s.screen_attr}" if s.screen_attr else ""
-        print(f"    {s.venue_name} — {s.time}{fmt} [{s.date_code}] — {cats}")
+        print(
+    f"    {s.venue_name} | "
+    f"Screen='{s.screen_attr}' | "
+    f"{s.time}{fmt} [{s.date_code}] — {cats}"
+)
 
     print("\n  Done.")
 
